@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8080"
+    prometheus.io/scrape: "true"
+  labels:
+    app: go-demo-3
+    tier: backend
+  name: go-demo-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-demo-3
+      tier: backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true"
+      labels:
+        app: go-demo-3
+        tier: backend
+    spec:
+      containers:
+      - image: jcostabe/go-demo-3:1.0
+        imagePullPolicy: Always
+        name: go-demo-3
+        env:
+        - name: APP_VERSION
+          value: "1.0"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+        readinessProbe:
+          httpGet:
+            path: /isAlive
+            port: 8080
+        livenessProbe:
+          httpGet:
+            path: /isAlive
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        resources: 
+          limits:
+            cpu: 100m
+            memory: 50Mi
+          requests:
+            cpu: 100m
+            memory: 50Mi
+      volumes:
+        - name: config-volume
+          configMap:
+            name: go-demo-cfg          

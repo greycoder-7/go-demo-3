@@ -1,0 +1,10 @@
+# Service
+environment: local
+serviceName: go-demo-3
+version: ${APP_VERSION}
+serverPort: 8080
+
+# DB
+mongodbHost: "mongodb"
+mongodbPort: 27017
+

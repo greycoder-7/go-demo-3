@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: go-demo-cfg
+data:
+  application.yaml: |+
+    # Service
+    environment: sandbox
+    serviceName: go-demo-3
+    version: ${APP_VERSION}
+    serverPort: 8080
+
+    # DB
+    mongodbHost: "mongodb"
+    mongodbPort: 27017
