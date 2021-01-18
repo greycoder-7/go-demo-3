@@ -349,7 +349,7 @@ func delayedResponse(w http.ResponseWriter, r *http.Request) {
 	clientConnections.WithLabelValues(cfg.ServiceConfig.Name).Inc()
 	defer func() { recordMetrics(r.URL.Path, r.Method, code, start) }()
 
-	randDuration := rand.Intn(10)
+	randDuration := rand.Intn(30)
 	sleep := time.Duration(randDuration) * time.Second
 	logrus.Infof("Delayed response with a duration of %v", sleep)
 	time.Sleep(sleep)
