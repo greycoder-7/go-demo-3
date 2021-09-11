@@ -61,6 +61,24 @@ helm install prometheus-adapter --set prometheus.url=http://prometheus-server.de
 
 Deploy the new prometheus adapter configuration to scrape custom metrics [configmap](k8s/prometheus-adapter/prometheus-adapter-cm.yaml)
 
+Create a new prometheus adapter configuration configmap to scrape the new `active_connections` metric from go-demo-3 application:
+
+```yaml
+rules:
+    - seriesQuery: '{__name__= "active_connections"}'
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      name:
+        matches: "active_connections"
+        as: ""
+      metricsQuery: <<.Series>>{<<.LabelMatchers>>,container_name!="POD"}
+```
+
+
 ```sh
 kubectl apply -f k8s/prometheus-adapter/prometheus-adapter-cm.yaml
 ```
