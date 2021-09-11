@@ -1,4 +1,4 @@
-# Go Demo 3 - Monitoring a Golang Application using HPA with Custom Metrics
+# Go Demo 3 - Using Horinzontal Pod Autoscaler with Custom Metrics
 
 ## Features
 
